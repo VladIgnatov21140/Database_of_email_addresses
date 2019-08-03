@@ -39,8 +39,9 @@ namespace Database_of_email_addresses.Controllers
                                                 int rowsCount = 3, int page = 1,
                                                 SortState sortOrder = SortState.IDAsc)
         {
-            IQueryable<Address> addresses = addrContext.Addresses;
 
+            IQueryable<Address> addresses = addrContext.Addresses;
+            /*
             //Фильтрация.....
             if (!String.IsNullOrEmpty(selectedCountry))
             {
@@ -67,7 +68,7 @@ namespace Database_of_email_addresses.Controllers
                 addresses = addresses.Where(p => p.Date.Equals(selectedDate));
             }
             //.....Фильтрация
-
+            */
             //Сортировка.....
             switch (sortOrder)
             {
@@ -115,20 +116,21 @@ namespace Database_of_email_addresses.Controllers
                     break;
             }
             //.....Сортировка
-
+            /*
             // пагинация
             var count = await addresses.CountAsync();
             var items = await addresses.Skip((page - 1) * rowsCount).Take(rowsCount).ToListAsync();
-
+            */
             // формируем модель представления
             IndexViewModel viewModel = new IndexViewModel
             {
-                PageViewModel = new PageViewModel(count, page, rowsCount),
-                SortViewModel = new SortViewModel(sortOrder),
-                FilterViewModel = new FilterViewModel(addrContext.Addresses.ToList(), selectedCountry,
+                Addresses = await addresses.AsNoTracking().ToArrayAsync(),
+                //PageViewModel = new PageViewModel(count, page, rowsCount),
+                SortViewModel = new SortViewModel(sortOrder)
+               /* FilterViewModel = new FilterViewModel(addrContext.Addresses.ToList(), selectedCountry,
                                                         selectedCity, selectedStreet, selectedHouse,
                                                         selectedPostCode, selectedDate),
-                Addresses = items
+                Addresses = items*/
             };
             return View(viewModel);
         }

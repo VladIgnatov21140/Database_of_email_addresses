@@ -7,9 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\FilterViewModel.cs" />
+    <Compile Remove="Models\PageViewModel.cs" />
+    <Compile Remove="TagHelpers\PageLinkTagHelper.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.12" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>
