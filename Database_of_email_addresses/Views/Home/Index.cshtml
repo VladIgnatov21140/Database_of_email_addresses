@@ -1,0 +1,112 @@
+﻿@using Database_of_email_addresses.Models
+
+@model IndexViewModel
+<!--импортируем tag-хелперы проекта-->
+@addTagHelper "*, Database_of_email_addresses"
+@{
+    ViewData["Title"] = "Database_of_email_addresses";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Index - Database of email addresses</title>
+</head>
+<body>
+    <h3>Email addresses</h3>
+    <form name="Addresses">
+        <table class="table" border="1">
+            <tr>
+                <td>
+                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                 property="@Model.SortViewModel.IDSort">ID</sort-header>
+                </td>
+                <td>
+                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                 property="@Model.SortViewModel.CountrySort">Country</sort-header>
+                </td>
+                <td>
+                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                 property="@Model.SortViewModel.CitySort">City</sort-header>
+                </td>
+                <td>
+                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                 property="@Model.SortViewModel.StreetSort">Street</sort-header>
+                </td>
+                <td>
+                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                 property="@Model.SortViewModel.HouseSort">House</sort-header>
+                </td>
+                <td>
+                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                 property="@Model.SortViewModel.PostCodeSort">Post Code</sort-header>
+                </td>
+                <td>
+                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                 property="@Model.SortViewModel.DateSort">Date</sort-header>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="Reset" type="reset" value="reset" />
+                </td>
+                <td>
+                    @Html.DropDownList("CountryList", Model.FilterViewModel.CountryList as SelectList,
+                    htmlAttributes: new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.TextBox("City", Model.FilterViewModel.SelectedCity, htmlAttributes: new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.TextBox("Street", Model.FilterViewModel.SelectedStreet, htmlAttributes: new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.TextBox("House", Model.FilterViewModel.SelectedHouse, htmlAttributes: new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.TextBox("Post Code", Model.FilterViewModel.SelectedPostCode, htmlAttributes: new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.TextBox("Date", Model.FilterViewModel.SelectedDate, htmlAttributes: new { @class = "form-control" })
+                </td>
+            </tr>
+            @foreach (var Address in Model.Addresses)
+            {
+            <tr>
+                <td>@Address.AddrID</td>
+                <td>@Address.Country</td>
+                <td>@Address.City</td>
+                <td>@Address.Street</td>
+                <td>@Address.House</td>
+                <td>@Address.PostCode</td>
+                <td>@Address.Date.Date.ToString("dd.MM.yyyy, hh:mm")</td>
+            </tr>
+            }
+        </table>
+        @Html.TextBox("RowsCount", Model.PageViewModel.RowsCount, htmlAttributes: new { @class = "form-control" })
+        @if (Model.PageViewModel.HasPreviousPage)
+        {
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+           asp-route-name="@(Model.FilterViewModel.SelectedCountry)"
+           asp-route-company="@(Model.FilterViewModel.SelectedPostCode)"
+           asp-route-sortorder="@(Model.SortViewModel.Current)"
+           class="btn btn-default btn">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Назад
+        </a>
+        }
+        @if (Model.PageViewModel.HasNextPage)
+        {
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+           asp-route-name="@(Model.FilterViewModel.SelectedCountry)"
+           asp-route-company="@(Model.FilterViewModel.SelectedPostCode)"
+           asp-route-sortorder="@(Model.SortViewModel.Current)"
+           class="btn btn-default btn">
+            Вперед
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+        }
+    </form>
+</body>
+</html>

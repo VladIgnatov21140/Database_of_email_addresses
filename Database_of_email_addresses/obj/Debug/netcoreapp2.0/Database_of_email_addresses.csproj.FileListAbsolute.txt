@@ -1,0 +1,6 @@
+D:\Projects_C#\Database_of_email_addresses\Database_of_email_addresses\obj\Debug\netcoreapp2.0\Database_of_email_addresses.csprojAssemblyReference.cache
+D:\Projects_C#\Database_of_email_addresses\Database_of_email_addresses\obj\Debug\netcoreapp2.0\Database_of_email_addresses.csproj.CoreCompileInputs.cache
+D:\Projects_C#\Database_of_email_addresses\Database_of_email_addresses\obj\Debug\netcoreapp2.0\Database_of_email_addresses.AssemblyInfoInputs.cache
+D:\Projects_C#\Database_of_email_addresses\Database_of_email_addresses\obj\Debug\netcoreapp2.0\Database_of_email_addresses.AssemblyInfo.cs
+D:\Projects_C#\Database_of_email_addresses\Database_of_email_addresses\obj\Debug\netcoreapp2.0\Database_of_email_addresses.TagHelpers.input.cache
+D:\Projects_C#\Database_of_email_addresses\Database_of_email_addresses\obj\Debug\netcoreapp2.0\Database_of_email_addresses.TagHelpers.output.cache
