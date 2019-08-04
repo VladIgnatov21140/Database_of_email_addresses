@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\FilterViewModel.cs" />
-    <Compile Remove="Models\PageViewModel.cs" />
     <Compile Remove="TagHelpers\PageLinkTagHelper.cs" />
   </ItemGroup>
 

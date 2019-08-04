@@ -36,22 +36,22 @@ namespace Database_of_email_addresses.Controllers
         public async Task<IActionResult> Index(string selectedCountry, string selectedCity,
                                                 string selectedStreet, int? selectedHouse,
                                                 string selectedPostCode, string selectedDate,
-                                                int rowsCount = 3, int page = 1,
+                                                int pageSize = 3, int page = 1,
                                                 SortState sortOrder = SortState.IDAsc)
         {
 
             IQueryable<Address> addresses = addrContext.Addresses;
-            /*
+            
             //Фильтрация.....
-            if (!String.IsNullOrEmpty(selectedCountry))
+            if (!String.IsNullOrWhiteSpace(selectedCountry) && selectedCountry != "Все")
             {
                 addresses = addresses.Where(p => p.Country.Contains(selectedCountry));
             }
-            if (!String.IsNullOrEmpty(selectedCity))
+            if (!String.IsNullOrWhiteSpace(selectedCity))
             {
                 addresses = addresses.Where(p => p.City.Contains(selectedCity));
             }
-            if (!String.IsNullOrEmpty(selectedStreet))
+            if (!String.IsNullOrWhiteSpace(selectedStreet))
             {
                 addresses = addresses.Where(p => p.Street.Contains(selectedStreet));
             }
@@ -59,16 +59,16 @@ namespace Database_of_email_addresses.Controllers
             {
                 addresses = addresses.Where(p => p.House == selectedHouse.Value);
             }
-            if (!String.IsNullOrEmpty(selectedPostCode))
+            if (!String.IsNullOrWhiteSpace(selectedPostCode))
             {
                 addresses = addresses.Where(p => p.PostCode.Contains(selectedPostCode));
             }
-            if (!String.IsNullOrEmpty(selectedDate))
+            if (!String.IsNullOrWhiteSpace(selectedDate))
             {
-                addresses = addresses.Where(p => p.Date.Equals(selectedDate));
+                addresses = addresses.Where(p => p.Date.ToString("dd.MM.yyyy, hh:mm").Equals(selectedDate));
             }
             //.....Фильтрация
-            */
+            
             //Сортировка.....
             switch (sortOrder)
             {
@@ -116,21 +116,20 @@ namespace Database_of_email_addresses.Controllers
                     break;
             }
             //.....Сортировка
-            /*
+            
             // пагинация
             var count = await addresses.CountAsync();
-            var items = await addresses.Skip((page - 1) * rowsCount).Take(rowsCount).ToListAsync();
-            */
+            var items = await addresses.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            
             // формируем модель представления
             IndexViewModel viewModel = new IndexViewModel
             {
-                Addresses = await addresses.AsNoTracking().ToArrayAsync(),
-                //PageViewModel = new PageViewModel(count, page, rowsCount),
-                SortViewModel = new SortViewModel(sortOrder)
-               /* FilterViewModel = new FilterViewModel(addrContext.Addresses.ToList(), selectedCountry,
+                Addresses = items,
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                SortViewModel = new SortViewModel(sortOrder),
+                FilterViewModel = new FilterViewModel(addrContext.Addresses.ToList(), selectedCountry,
                                                         selectedCity, selectedStreet, selectedHouse,
                                                         selectedPostCode, selectedDate),
-                Addresses = items*/
             };
             return View(viewModel);
         }

@@ -10,9 +10,11 @@ namespace Database_of_email_addresses.Models
         public int RowsCount { get; private set; }
         public int PageNumber { get; private set; }
         public int TotalPages { get; private set; }
+        public int PageSize { get; set; }
 
         public PageViewModel(int rowsCount, int pageNumber, int pageSize)
         {
+            PageSize = pageSize;
             RowsCount = rowsCount;
             if (rowsCount > 100)
                 RowsCount = 100;

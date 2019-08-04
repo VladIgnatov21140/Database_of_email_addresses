@@ -13,7 +13,7 @@
 </head>
 <body>
     <h3>Email addresses</h3>
-    <form name="Addresses">
+    <form id="AddressesTable">
         <table class="table" border="1">
             <tr>
                 <td>
@@ -45,29 +45,49 @@
                                  property="@Model.SortViewModel.DateSort">Date</sort-header>
                 </td>
             </tr>
-            <!--          <tr>
-                   <td>
-                       <input id="Reset" type="reset" value="reset" />
-                   </td>
-                   <td>
-                       
-                   </td>
-                   <td>
-                       
-                   </td>
-                   <td>
-                       
-                   </td>
-                   <td>
-                     
-                   </td>
-                   <td>
-                      
-                   </td>
-                   <td>
-                     
-                   </td>
-               </tr>-->
+            <tr>
+                <td>
+                    <input id="Reset" type="reset" value="reset" />
+                </td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="CountriesDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            @if (String.IsNullOrWhiteSpace(@Model.FilterViewModel.SelectedCountry) || @Model.FilterViewModel.SelectedCountry == "Все")
+                            {
+                                Write("Все");
+                            }
+                            else
+                            {
+                                Write(@Model.FilterViewModel.SelectedCountry);
+                            }
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="CountriesDropdownMenu">
+                            @foreach (var country in Model.FilterViewModel.СountriesList)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Index", "Home", new { selectedCountry = @country.Text})">@country.Text</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    @Html.TextBox("selectedCity", @Model.FilterViewModel.SelectedCity, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedCity" })
+                </td>
+                <td>
+                    @Html.TextBox("selectedStreet", @Model.FilterViewModel.SelectedStreet, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedStreet" })
+                </td>
+                <td>
+                    @Html.TextBox("selectedHouse", @Model.FilterViewModel.SelectedHouse, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedHouse" })
+                </td>
+                <td>
+                    @Html.TextBox("selectedPostCode", @Model.FilterViewModel.SelectedPostCode, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedPostCode" })
+                </td>
+                <td>
+                    @Html.TextBox("selectedDate", @Model.FilterViewModel.SelectedDate, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedDate" })
+                </td>
+            </tr>
             @foreach (var Address in Model.Addresses)
             {
                 <tr>
@@ -81,7 +101,37 @@
                 </tr>
             }
         </table>
-       
+        <div class="form-group row">
+            @Html.TextBox("pageSize", @Model.PageViewModel.PageSize, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.PageViewModel.PageSize", width="10%" })
+                <nav aria-label="PageNavigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            @if (Model.PageViewModel.HasPreviousPage)
+                            {
+                                <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.PageViewModel.PageNumber - 1 })" tabindex="-1">Previous</a>
+                            }
+                            else
+                            {
+                                <a class="page-link" tabindex="-1">Previous</a>
+                            }
+                        </li>
+                        @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
+                        {
+                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Home", new { page = i })">@i.ToString()</a></li>
+                        }
+                        <li class="page-item">
+                            @if (Model.PageViewModel.HasNextPage)
+                            {
+                                <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.PageViewModel.PageNumber + 1 })">Next</a>
+                            }
+                            else
+                            {
+                                <a class="page-link">Next</a>
+                            }
+                        </li>
+                    </ul>
+                </nav>
+        </div>
     </form>
 </body>
 </html>
