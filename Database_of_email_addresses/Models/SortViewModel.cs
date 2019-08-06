@@ -18,7 +18,7 @@ namespace Database_of_email_addresses.Models
         public SortState Current { get; set; }
         public bool Up { get; set; }
 
-        public SortViewModel(SortState sortState)
+        public SortViewModel(SortState sortState, bool noInvertSort)
         {
             IDSort = SortState.IDAsc;
             CountrySort = SortState.CountryAsc;
@@ -29,59 +29,162 @@ namespace Database_of_email_addresses.Models
             DateSort = SortState.DateAsc;
             Up = true;
 
-            if (sortState == SortState.IDDesc || sortState == SortState.CountryDesc
-                || sortState == SortState.CityDesc || sortState == SortState.StreetDesc
-                || sortState == SortState.HouseDesc || sortState == SortState.PostCodeDesc
-                || sortState == SortState.DateDesc)
+            if (!noInvertSort)
             {
-                Up = false;
+                if (sortState == SortState.IDDesc || sortState == SortState.CountryDesc
+                    || sortState == SortState.CityDesc || sortState == SortState.StreetDesc
+                    || sortState == SortState.HouseDesc || sortState == SortState.PostCodeDesc
+                    || sortState == SortState.DateDesc)
+                {
+                    Up = false;
+                }
+
+                switch (sortState)
+                {
+                    case SortState.IDAsc:
+                        Current = IDSort = SortState.IDDesc;
+                        break;
+                    case SortState.IDDesc:
+                        Current = IDSort = SortState.IDAsc;
+                        break;
+                    case SortState.CountryAsc:
+                        Current = CountrySort = SortState.CountryDesc;
+                        break;
+                    case SortState.CountryDesc:
+                        Current = CountrySort = SortState.CountryAsc;
+                        break;
+                    case SortState.CityAsc:
+                        Current = CitySort = SortState.CityDesc;
+                        break;
+                    case SortState.CityDesc:
+                        Current = CitySort = SortState.CityAsc;
+                        break;
+                    case SortState.StreetAsc:
+                        Current = StreetSort = SortState.StreetDesc;
+                        break;
+                    case SortState.StreetDesc:
+                        Current = StreetSort = SortState.StreetAsc;
+                        break;
+                    case SortState.HouseAsc:
+                        Current = HouseSort = SortState.HouseDesc;
+                        break;
+                    case SortState.HouseDesc:
+                        Current = HouseSort = SortState.HouseAsc;
+                        break;
+                    case SortState.PostCodeAsc:
+                        Current = PostCodeSort = SortState.PostCodeDesc;
+                        break;
+                    case SortState.PostCodeDesc:
+                        Current = PostCodeSort = SortState.PostCodeAsc;
+                        break;
+                    case SortState.DateAsc:
+                        Current = DateSort = SortState.DateDesc;
+                        break;
+                    case SortState.DateDesc:
+                        Current = DateSort = SortState.DateAsc;
+                        break;
+                }
+            }
+            else
+            {
+                switch (sortState)
+                {
+                    case SortState.IDAsc:
+                        Current = IDSort = SortState.IDAsc;
+                        break;
+                    case SortState.IDDesc:
+                        Current = IDSort = SortState.IDDesc;
+                        break;
+                    case SortState.CountryAsc:
+                        Current = CountrySort = SortState.CountryAsc;
+                        break;
+                    case SortState.CountryDesc:
+                        Current = CountrySort = SortState.CountryDesc;
+                        break;
+                    case SortState.CityAsc:
+                        Current = CitySort = SortState.CityAsc;
+                        break;
+                    case SortState.CityDesc:
+                        Current = CitySort = SortState.CityDesc;
+                        break;
+                    case SortState.StreetAsc:
+                        Current = StreetSort = SortState.StreetAsc;
+                        break;
+                    case SortState.StreetDesc:
+                        Current = StreetSort = SortState.StreetDesc;
+                        break;
+                    case SortState.HouseAsc:
+                        Current = HouseSort = SortState.HouseAsc;
+                        break;
+                    case SortState.HouseDesc:
+                        Current = HouseSort = SortState.HouseDesc;
+                        break;
+                    case SortState.PostCodeAsc:
+                        Current = PostCodeSort = SortState.PostCodeAsc;
+                        break;
+                    case SortState.PostCodeDesc:
+                        Current = PostCodeSort = SortState.PostCodeDesc;
+                        break;
+                    case SortState.DateAsc:
+                        Current = DateSort = SortState.DateAsc;
+                        break;
+                    case SortState.DateDesc:
+                        Current = DateSort = SortState.DateDesc;
+                        break;
+                }
             }
 
-            switch (sortState)
+
+        }
+
+        public static IQueryable<Address> Sort(IQueryable<Address> addresses, SortState sortOrder)
+        {
+            switch (sortOrder)
             {
                 case SortState.IDAsc:
-                    Current = IDSort = SortState.IDDesc;
+                    addresses = addresses.OrderBy(s => s.AddrID);
                     break;
                 case SortState.IDDesc:
-                    Current = IDSort = SortState.IDAsc;
+                    addresses = addresses.OrderByDescending(s => s.AddrID);
                     break;
                 case SortState.CountryAsc:
-                    Current = CountrySort = SortState.CountryDesc;
+                    addresses = addresses.OrderBy(s => s.Country);
                     break;
                 case SortState.CountryDesc:
-                    Current = CountrySort = SortState.CountryAsc;
+                    addresses = addresses.OrderByDescending(s => s.Country);
                     break;
                 case SortState.CityAsc:
-                    Current = CitySort = SortState.CityDesc;
+                    addresses = addresses.OrderBy(s => s.City);
                     break;
                 case SortState.CityDesc:
-                    Current = CitySort = SortState.CityAsc;
+                    addresses = addresses.OrderByDescending(s => s.City);
                     break;
                 case SortState.StreetAsc:
-                    Current = StreetSort = SortState.StreetDesc;
+                    addresses = addresses.OrderBy(s => s.Street);
                     break;
                 case SortState.StreetDesc:
-                    Current = StreetSort = SortState.StreetAsc;
+                    addresses = addresses.OrderByDescending(s => s.Street);
                     break;
                 case SortState.HouseAsc:
-                    Current = HouseSort = SortState.HouseDesc;
+                    addresses = addresses.OrderBy(s => s.House);
                     break;
                 case SortState.HouseDesc:
-                    Current = HouseSort = SortState.HouseAsc;
+                    addresses = addresses.OrderByDescending(s => s.House);
                     break;
                 case SortState.PostCodeAsc:
-                    Current = PostCodeSort = SortState.PostCodeDesc;
+                    addresses = addresses.OrderBy(s => s.PostCode);
                     break;
                 case SortState.PostCodeDesc:
-                    Current = PostCodeSort = SortState.PostCodeAsc;
+                    addresses = addresses.OrderByDescending(s => s.PostCode);
                     break;
                 case SortState.DateAsc:
-                    Current = DateSort = SortState.DateDesc;
+                    addresses = addresses.OrderBy(s => s.Date);
                     break;
                 case SortState.DateDesc:
-                    Current = DateSort = SortState.DateAsc;
+                    addresses = addresses.OrderByDescending(s => s.Date);
                     break;
             }
+            return addresses;
         }
     }
 }

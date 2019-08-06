@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "3db6e3ea4ee1a662c1b55edc71b33dd41e293545"
+    "signature": "82bef018363710a58464bfe9059922aec0e6b3a1"
   },
   "compilationOptions": {
     "defines": [
@@ -28,7 +28,8 @@
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.7.12",
-          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.3"
+          "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.3",
+          "Microsoft.jQuery.Unobtrusive.Ajax": "3.0.0"
         },
         "runtime": {
           "Database_of_email_addresses.dll": {}
@@ -37,6 +38,7 @@
           "Database_of_email_addresses.dll": {}
         }
       },
+      "jQuery/1.4.4": {},
       "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
         "dependencies": {
           "Microsoft.CodeAnalysis.CSharp": "2.8.0",
@@ -70,6 +72,11 @@
         },
         "compile": {
           "lib/netstandard1.3/Microsoft.CodeAnalysis.Workspaces.dll": {}
+        }
+      },
+      "Microsoft.jQuery.Unobtrusive.Ajax/3.0.0": {
+        "dependencies": {
+          "jQuery": "1.4.4"
         }
       },
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.7.12": {},
@@ -4099,6 +4106,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "jQuery/1.4.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kexCeYIZehR5fRjo8CK1sngN5SZEQRFNfCYZHMS1RxwEEiSKetBw/gliYJcLJdJEBB+e9aHqleLCjuaSI7u23g==",
+      "path": "jquery/1.4.4",
+      "hashPath": "jquery.1.4.4.nupkg.sha512"
+    },
     "Microsoft.CodeAnalysis.CSharp.Workspaces/2.8.0": {
       "type": "package",
       "serviceable": true,
@@ -4112,6 +4126,13 @@
       "sha512": "sha512-tJlJ99SD8bHBAXShOG/pXQ1K118cnsF01obEf9aAtdgLbw3yEPahZ7qvWeGMjrheUhvOsSkv/wTKYg9euKa8MQ==",
       "path": "microsoft.codeanalysis.workspaces.common/2.8.0",
       "hashPath": "microsoft.codeanalysis.workspaces.common.2.8.0.nupkg.sha512"
+    },
+    "Microsoft.jQuery.Unobtrusive.Ajax/3.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-3jk3IysMmuz41Q3rU7JACsruyRhHfDTNeqUPrDTjbXATB6H/po3ZABk/wke4o9PiwnCrL5AjHDzztDNL8l1XUw==",
+      "path": "microsoft.jquery.unobtrusive.ajax/3.0.0",
+      "hashPath": "microsoft.jquery.unobtrusive.ajax.3.0.0.nupkg.sha512"
     },
     "Microsoft.VisualStudio.Azure.Containers.Tools.Targets/1.7.12": {
       "type": "package",

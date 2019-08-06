@@ -37,11 +37,12 @@ namespace Database_of_email_addresses.Controllers
                                                 string selectedStreet, int? selectedHouse,
                                                 string selectedPostCode, string selectedDate,
                                                 int pageSize = 3, int page = 1,
-                                                SortState sortOrder = SortState.IDAsc)
+                                                SortState sortOrder = SortState.IDAsc,
+                                                bool noInvertSort = false)
         {
 
             IQueryable<Address> addresses = addrContext.Addresses;
-            
+
             //Фильтрация.....
             if (!String.IsNullOrWhiteSpace(selectedCountry) && selectedCountry != "Все")
             {
@@ -68,53 +69,9 @@ namespace Database_of_email_addresses.Controllers
                 addresses = addresses.Where(p => p.Date.ToString("dd.MM.yyyy, hh:mm").Equals(selectedDate));
             }
             //.....Фильтрация
-            
+
             //Сортировка.....
-            switch (sortOrder)
-            {
-                case SortState.IDAsc:
-                    addresses = addresses.OrderBy(s => s.AddrID);
-                    break;
-                case SortState.IDDesc:
-                    addresses = addresses.OrderByDescending(s => s.AddrID);
-                    break;
-                case SortState.CountryAsc:
-                    addresses = addresses.OrderBy(s => s.Country);
-                    break;
-                case SortState.CountryDesc:
-                    addresses = addresses.OrderByDescending(s => s.Country);
-                    break;
-                case SortState.CityAsc:
-                    addresses = addresses.OrderBy(s => s.City);
-                    break;
-                case SortState.CityDesc:
-                    addresses = addresses.OrderByDescending(s => s.City);
-                    break;
-                case SortState.StreetAsc:
-                    addresses = addresses.OrderBy(s => s.Street);
-                    break;
-                case SortState.StreetDesc:
-                    addresses = addresses.OrderByDescending(s => s.Street);
-                    break;
-                case SortState.HouseAsc:
-                    addresses = addresses.OrderBy(s => s.House);
-                    break;
-                case SortState.HouseDesc:
-                    addresses = addresses.OrderByDescending(s => s.House);
-                    break;
-                case SortState.PostCodeAsc:
-                    addresses = addresses.OrderBy(s => s.PostCode);
-                    break;
-                case SortState.PostCodeDesc:
-                    addresses = addresses.OrderByDescending(s => s.PostCode);
-                    break;
-                case SortState.DateAsc:
-                    addresses = addresses.OrderBy(s => s.Date);
-                    break;
-                case SortState.DateDesc:
-                    addresses = addresses.OrderByDescending(s => s.Date);
-                    break;
-            }
+            addresses = SortViewModel.Sort(addresses, sortOrder);
             //.....Сортировка
             
             // пагинация
@@ -126,13 +83,14 @@ namespace Database_of_email_addresses.Controllers
             {
                 Addresses = items,
                 PageViewModel = new PageViewModel(count, page, pageSize),
-                SortViewModel = new SortViewModel(sortOrder),
+                SortViewModel = new SortViewModel(sortOrder, noInvertSort),
                 FilterViewModel = new FilterViewModel(addrContext.Addresses.ToList(), selectedCountry,
                                                         selectedCity, selectedStreet, selectedHouse,
                                                         selectedPostCode, selectedDate),
             };
             return View(viewModel);
         }
+
 
         //public async Task<IActionResult> Index(SortState sortOrder = SortState.IDAsc)
         //{

@@ -2,7 +2,6 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-
 $('.filtertext').keypress(function (event) {
     if (event.keyCode == 13)
         $('#AddressesTable').submit();

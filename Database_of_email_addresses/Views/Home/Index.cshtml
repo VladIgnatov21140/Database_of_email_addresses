@@ -13,7 +13,7 @@
 </head>
 <body>
     <h3>Email addresses</h3>
-    <form id="AddressesTable">
+    <form sortOrder=Model.SortViewModel.Current page=Model.PageViewModel.PageNumber noInvertSort=true method="post" id="AddressesTable">
         <table class="table" border="1">
             <tr>
                 <td>
@@ -66,7 +66,18 @@
                             @foreach (var country in Model.FilterViewModel.СountriesList)
                             {
                                 <li>
-                                    <a href="@Url.Action("Index", "Home", new { selectedCountry = @country.Text})">@country.Text</a>
+                                    <a href="@Url.Action("Index", "Home", new { selectedCountry = @country.Text,
+                                                                                page=Model.PageViewModel.PageNumber,
+                                                                                selectedCity=Model.FilterViewModel.SelectedCity,
+                                                                                selectedStreet=Model.FilterViewModel.SelectedStreet,
+                                                                                selectedHouse=Model.FilterViewModel.SelectedHouse,
+                                                                                selectedPostCode=Model.FilterViewModel.SelectedPostCode,
+                                                                                selectedDate=Model.FilterViewModel.SelectedDate,
+                                                                                sortOrder=Model.SortViewModel.Current,
+                                                                                noInvertSort=true
+                                                                              })">
+                                        @country.Text
+                                    </a>
                                 </li>
                             }
                         </ul>
@@ -102,35 +113,75 @@
             }
         </table>
         <div class="form-group row">
-            @Html.TextBox("pageSize", @Model.PageViewModel.PageSize, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.PageViewModel.PageSize", width="10%" })
-                <nav aria-label="PageNavigation">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            @if (Model.PageViewModel.HasPreviousPage)
-                            {
-                                <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.PageViewModel.PageNumber - 1 })" tabindex="-1">Previous</a>
-                            }
-                            else
-                            {
-                                <a class="page-link" tabindex="-1">Previous</a>
-                            }
-                        </li>
-                        @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
+            @Html.TextBox("pageSize", @Model.PageViewModel.PageSize, htmlAttributes: new{ @class = "filtertext form-control",
+                                                                                          onKeyPress = "",
+                                                                                          value = "@Model.PageViewModel.PageSize",
+                                                                                          width = "10%",
+                                                                                          sortOrder = Model.SortViewModel.Current,
+                                                                                          selectedCountry = Model.FilterViewModel.SelectedCountry,
+                                                                                          selectedCity = Model.FilterViewModel.SelectedCity,
+                                                                                          selectedStreet = Model.FilterViewModel.SelectedStreet,
+                                                                                          selectedHouse = Model.FilterViewModel.SelectedHouse,
+                                                                                          selectedPostCode = Model.FilterViewModel.SelectedPostCode,
+                                                                                          selectedDate = Model.FilterViewModel.SelectedDate
+                                                                                         })
+            <nav aria-label="PageNavigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        @if (Model.PageViewModel.HasPreviousPage)
                         {
-                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Home", new { page = i })">@i.ToString()</a></li>
+                            <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.PageViewModel.PageNumber - 1,
+                                                                                              selectedCountry =Model.FilterViewModel.SelectedCountry,
+                                                                                              selectedCity=Model.FilterViewModel.SelectedCity,
+                                                                                              selectedStreet=Model.FilterViewModel.SelectedStreet,
+                                                                                              selectedHouse=Model.FilterViewModel.SelectedHouse,
+                                                                                              selectedPostCode=Model.FilterViewModel.SelectedPostCode,
+                                                                                              selectedDate=Model.FilterViewModel.SelectedDate,
+                                                                                              sortOrder=Model.SortViewModel.Current,
+                                                                                              noInvertSort=true
+                                                                                            })" tabindex="-1">Previous</a>
                         }
+                        else
+                        {
+                            <a class="page-link" tabindex="-1">Previous</a>
+                        }
+                    </li>
+                    @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
+                    {
                         <li class="page-item">
-                            @if (Model.PageViewModel.HasNextPage)
-                            {
-                                <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.PageViewModel.PageNumber + 1 })">Next</a>
-                            }
-                            else
-                            {
-                                <a class="page-link">Next</a>
-                            }
-                        </li>
-                    </ul>
-                </nav>
+                            <a class="page-link" href="@Url.Action("Index", "Home", new { page = i,
+                                                                                              selectedCountry =Model.FilterViewModel.SelectedCountry,
+                                                                                              selectedCity=Model.FilterViewModel.SelectedCity,
+                                                                                              selectedStreet=Model.FilterViewModel.SelectedStreet,
+                                                                                              selectedHouse=Model.FilterViewModel.SelectedHouse,
+                                                                                              selectedPostCode=Model.FilterViewModel.SelectedPostCode,
+                                                                                              selectedDate=Model.FilterViewModel.SelectedDate,
+                                                                                              sortOrder=Model.SortViewModel.Current,
+                                                                                              noInvertSort=true
+                                                                                            })">@i.ToString()</a>
+                                                                                        </li>
+                                                                                    }
+                    <li class="page-item">
+                        @if (Model.PageViewModel.HasNextPage)
+                        {
+                            <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.PageViewModel.PageNumber + 1,
+                                                                                              selectedCountry =Model.FilterViewModel.SelectedCountry,
+                                                                                              selectedCity=Model.FilterViewModel.SelectedCity,
+                                                                                              selectedStreet=Model.FilterViewModel.SelectedStreet,
+                                                                                              selectedHouse=Model.FilterViewModel.SelectedHouse,
+                                                                                              selectedPostCode=Model.FilterViewModel.SelectedPostCode,
+                                                                                              selectedDate=Model.FilterViewModel.SelectedDate,
+                                                                                              sortOrder=Model.SortViewModel.Current,
+                                                                                              noInvertSort=true
+                                                                                            })">Next</a>
+                        }
+                        else
+                        {
+                            <a class="page-link">Next</a>
+                        }
+                    </li>
+                </ul>
+            </nav>
         </div>
     </form>
 </body>
