@@ -3,6 +3,10 @@
 
 // Write your JavaScript code.
 $('.filtertext').keypress(function (event) {
-    if (event.keyCode == 13)
-        $('#AddressesTable').submit();
+    if (event.keyCode == 13) {
+        SendFilteringReport();
+    }
+});
+$('#refreshtable').click(function (event) {
+    refreshtable();
 });

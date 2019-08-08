@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Database_of_email_addresses.DBController;
+using Database_of_email_addresses.Models;
 
 namespace Database_of_email_addresses.TagHelpers
 {
@@ -12,6 +13,7 @@ namespace Database_of_email_addresses.TagHelpers
         public SortState Property { get; set; } // значение текущего свойства, для которого создается тег
         public SortState Current { get; set; }  // значение активного свойства, выбранного для сортировки
         public string Action { get; set; }  // действие контроллера, на которое создается ссылка
+        public IndexViewModel Indexviewmodelorder { get; set; }
         public bool Up { get; set; }    // сортировка по возрастанию или убыванию
 
         private IUrlHelperFactory urlHelperFactory;
@@ -27,7 +29,7 @@ namespace Database_of_email_addresses.TagHelpers
         {
             IUrlHelper urlHelper = urlHelperFactory.GetUrlHelper(ViewContext);
             output.TagName = "a";
-            string url = urlHelper.Action(Action, new { sortOrder = Property });
+            string url = urlHelper.Action(Action, new { indexViewModel = Indexviewmodelorder });
             output.Attributes.SetAttribute("href", url);
             // если текущее свойство имеет значение CurrentSort
             if (Current == Property)

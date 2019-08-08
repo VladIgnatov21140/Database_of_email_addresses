@@ -6,21 +6,26 @@ namespace Database_of_email_addresses.Models
 {
     public class FilterViewModel
     {
-        public SelectList СountriesList { get; set; }
         public string SelectedCountry { get; set; }
         public string SelectedCity { get; set; }
         public string SelectedStreet { get; set; }
-        public int? SelectedHouse { get; set; }
+        public string SelectedHouse { get; set; }
         public string SelectedPostCode { get; set; }
         public string SelectedDate { get; set; }
 
-        public FilterViewModel(List<Address> addresses, string selectedCountry,
-                                string selectedCity, string selectedStreet,
-                                int? selectedHouse, string selectedPostCode, string selectedDate)
+        public FilterViewModel()
         {
-            addresses.Insert(0, new Address(country : "Все", city : "Все", street : "Все",
-                                            house : 0, postCode : "Все", date : new System.DateTime()));
-            СountriesList = new SelectList(addresses, "PostCode", "Country", selectedCountry);
+            SelectedCountry = "";
+            SelectedCity = "";
+            SelectedStreet = "";
+            SelectedHouse = "";
+            SelectedPostCode = "";
+            SelectedDate = "";
+        }
+
+        public FilterViewModel(string selectedCountry, string selectedCity, string selectedStreet,
+                                string selectedHouse, string selectedPostCode, string selectedDate)
+        {
             SelectedCountry = selectedCountry;
             SelectedCity = selectedCity;
             SelectedStreet = selectedStreet;

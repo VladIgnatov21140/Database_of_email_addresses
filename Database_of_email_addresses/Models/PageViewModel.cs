@@ -7,8 +7,8 @@ namespace Database_of_email_addresses.Models
 {
     public class PageViewModel
     {
-        public int RowsCount { get; private set; }
-        public int PageNumber { get; private set; }
+        public int RowsCount { get; set; }
+        public int PageNumber { get; set; }
         public int TotalPages { get; private set; }
         public int PageSize { get; set; }
 

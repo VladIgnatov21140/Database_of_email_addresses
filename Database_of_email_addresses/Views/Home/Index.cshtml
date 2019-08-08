@@ -1,4 +1,5 @@
 ﻿@using Database_of_email_addresses.Models
+@using Newtonsoft.Json;
 
 @model IndexViewModel
 <!--импортируем tag-хелперы проекта-->
@@ -6,183 +7,176 @@
 @{
     ViewData["Title"] = "Database_of_email_addresses";
 }
-<!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
     <title>Index - Database of email addresses</title>
+    <script type="text/javascript">
+        function refreshtable() {
+            const request = new XMLHttpRequest();
+            const url = '@Url.Action("Index", "Home")';
+            request.open('GET', url);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-url');
+            request.addEventListener("readystatechange", () => {
+                    if (request.readyState === 4 && request.status === 200) {
+                        $("#content").html(request.responseText);
+                        console.log(request.responseText);
+                    }
+                });
+            request.send();
+        }
+
+        function SendFilteringReport() {
+            const request = new XMLHttpRequest();
+            let data = "[{\"Item1\":\"SelectedCountry\",\"Item2\":\"" + $('#SelectedCountry').val() + "\"}," + "{\"Item1\":\"SelectedCity\",\"Item2\":\"" + $('#SelectedCity').val() + "\"}," + "{\"Item1\":\"SelectedStreet\",\"Item2\":\"" + $('#SelectedStreet').val() + "\"}," + "{\"Item1\":\"SelectedHouse\",\"Item2\":\"" + $('#SelectedHouse').val() + "\"}," + "{\"Item1\":\"SelectedPostCode\",\"Item2\":\"" + $('#SelectedPostCode').val() + "\"}," + "{\"Item1\":\"SelectedDate\",\"Item2\":\"" + $('#SelectedDate').val() + "\"}" + "]";
+            const url = '@Url.Action("GetAddressesDataQuery", "Home")' + "?SNewParameters=" + data;
+            request.open('GET', url);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-url');
+            request.addEventListener("readystatechange", () => {
+                    if (request.readyState === 4 && request.status === 200) {
+                        $("#content").html(request.responseText);
+                        console.log(request.responseText);
+                    }
+                });
+            request.send();
+        }
+    </script>
 </head>
-<body>
+<body id="content">
     <h3>Email addresses</h3>
-    <form sortOrder=Model.SortViewModel.Current page=Model.PageViewModel.PageNumber noInvertSort=true method="post" id="AddressesTable">
-        <table class="table" border="1">
-            <tr>
-                <td>
-                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                 property="@Model.SortViewModel.IDSort">ID</sort-header>
-                </td>
-                <td>
-                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                 property="@Model.SortViewModel.CountrySort">Country</sort-header>
-                </td>
-                <td>
-                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                 property="@Model.SortViewModel.CitySort">City</sort-header>
-                </td>
-                <td>
-                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                 property="@Model.SortViewModel.StreetSort">Street</sort-header>
-                </td>
-                <td>
-                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                 property="@Model.SortViewModel.HouseSort">House</sort-header>
-                </td>
-                <td>
-                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                 property="@Model.SortViewModel.PostCodeSort">Post Code</sort-header>
-                </td>
-                <td>
-                    <sort-header action="Index" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                 property="@Model.SortViewModel.DateSort">Date</sort-header>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input id="Reset" type="reset" value="reset" />
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="CountriesDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            @if (String.IsNullOrWhiteSpace(@Model.FilterViewModel.SelectedCountry) || @Model.FilterViewModel.SelectedCountry == "Все")
-                            {
-                                Write("Все");
-                            }
-                            else
-                            {
-                                Write(@Model.FilterViewModel.SelectedCountry);
-                            }
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="CountriesDropdownMenu">
-                            @foreach (var country in Model.FilterViewModel.СountriesList)
-                            {
-                                <li>
-                                    <a href="@Url.Action("Index", "Home", new { selectedCountry = @country.Text,
-                                                                                page=Model.PageViewModel.PageNumber,
-                                                                                selectedCity=Model.FilterViewModel.SelectedCity,
-                                                                                selectedStreet=Model.FilterViewModel.SelectedStreet,
-                                                                                selectedHouse=Model.FilterViewModel.SelectedHouse,
-                                                                                selectedPostCode=Model.FilterViewModel.SelectedPostCode,
-                                                                                selectedDate=Model.FilterViewModel.SelectedDate,
-                                                                                sortOrder=Model.SortViewModel.Current,
-                                                                                noInvertSort=true
-                                                                              })">
-                                        @country.Text
-                                    </a>
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </td>
-                <td>
-                    @Html.TextBox("selectedCity", @Model.FilterViewModel.SelectedCity, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedCity" })
-                </td>
-                <td>
-                    @Html.TextBox("selectedStreet", @Model.FilterViewModel.SelectedStreet, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedStreet" })
-                </td>
-                <td>
-                    @Html.TextBox("selectedHouse", @Model.FilterViewModel.SelectedHouse, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedHouse" })
-                </td>
-                <td>
-                    @Html.TextBox("selectedPostCode", @Model.FilterViewModel.SelectedPostCode, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedPostCode" })
-                </td>
-                <td>
-                    @Html.TextBox("selectedDate", @Model.FilterViewModel.SelectedDate, htmlAttributes: new { @class = "filtertext form-control", onKeyPress = "", value = "@Model.FilterViewModel.SelectedDate" })
-                </td>
-            </tr>
-            @foreach (var Address in Model.Addresses)
-            {
+    <form>
+        <table class="table table-striped table-bordered" border="1">
+            <thead>
                 <tr>
-                    <td>@Address.AddrID</td>
-                    <td>@Address.Country</td>
-                    <td>@Address.City</td>
-                    <td>@Address.Street</td>
-                    <td>@Address.House</td>
-                    <td>@Address.PostCode</td>
-                    <td>@Address.Date.Date.ToString("dd.MM.yyyy, hh:mm")</td>
+                    <th scope="col">
+                        <sort-header action="GetAddressesDataQuery" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                     indexviewmodelorder="@Model" property="@Model.SortViewModel.IDSort">#</sort-header>
+                    </th>
+                    <th scope="col">
+                        <sort-header action="GetAddressesDataQuery" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                     property="@Model.SortViewModel.CountrySort">Страна</sort-header>
+                    </th>
+                    <th scope="col">
+                        <sort-header action="GetAddressesDataQuery" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                     property="@Model.SortViewModel.CitySort">Город</sort-header>
+                    </th>
+                    <th scope="col">
+                        <sort-header action="GetAddressesDataQuery" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                     property="@Model.SortViewModel.StreetSort">Улица</sort-header>
+                    </th>
+                    <th scope="col">
+                        <sort-header action="GetAddressesDataQuery" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                     property="@Model.SortViewModel.HouseSort">Дом</sort-header>
+                    </th>
+                    <th scope="col">
+                        <sort-header action="GetAddressesDataQuery" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                     property="@Model.SortViewModel.PostCodeSort">Индекс</sort-header>
+                    </th>
+                    <th scope="col">
+                        <sort-header action="GetAddressesDataQuery" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
+                                     property="@Model.SortViewModel.DateSort">Дата записи</sort-header>
+                    </th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span id="refreshtable" class="glyphicon glyphicon-refresh" onclick=""></span>
+                    </td>
+                    <td>
+                        <input type="text" class="filtertext form-control" id="SelectedCountry" onkeypress="" value="@Model.FilterViewModel.SelectedCountry" />
+                    </td>
+                    <td>
+                        <input type="text" class="filtertext form-control" id="SelectedCity" onkeypress="" value="@Model.FilterViewModel.SelectedCity" />
+                    </td>
+                    <td>
+                        <input type="text" class="filtertext form-control" id="SelectedStreet" onkeypress="" value="@Model.FilterViewModel.SelectedStreet" />
+                    </td>
+                    <td>
+                        <input type="text" class="filtertext form-control" id="SelectedHouse" onkeypress="" value="@Model.FilterViewModel.SelectedHouse" />
+                    </td>
+                    <td>
+                        <input type="text" class="filtertext form-control" id="SelectedPostCode" onkeypress="" value="@Model.FilterViewModel.SelectedPostCode" />
+                    </td>
+                    <td>
+                        <input type="text" class="filtertext form-control" id="SelectedDate" onkeypress="" value="@Model.FilterViewModel.SelectedDate" />
+                    </td>
+                </tr>
+                @foreach (var Address in Model.Addresses)
+                {
+                    <tr>
+                        <td>@Address.AddrID</td>
+                        <td>@Address.Country</td>
+                        <td>@Address.City</td>
+                        <td>@Address.Street</td>
+                        <td>@Address.House</td>
+                        <td>@Address.PostCode</td>
+                        <td>@Address.Date.Date.ToString("dd.MM.yyyy hh:mm")</td>
+                    </tr>
+                }
+            </tbody>
         </table>
         <div class="form-group row">
-            @Html.TextBox("pageSize", @Model.PageViewModel.PageSize, htmlAttributes: new{ @class = "filtertext form-control",
-                                                                                          onKeyPress = "",
-                                                                                          value = "@Model.PageViewModel.PageSize",
-                                                                                          width = "10%",
-                                                                                          sortOrder = Model.SortViewModel.Current,
-                                                                                          selectedCountry = Model.FilterViewModel.SelectedCountry,
-                                                                                          selectedCity = Model.FilterViewModel.SelectedCity,
-                                                                                          selectedStreet = Model.FilterViewModel.SelectedStreet,
-                                                                                          selectedHouse = Model.FilterViewModel.SelectedHouse,
-                                                                                          selectedPostCode = Model.FilterViewModel.SelectedPostCode,
-                                                                                          selectedDate = Model.FilterViewModel.SelectedDate
-                                                                                         })
-            <nav aria-label="PageNavigation">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        @if (Model.PageViewModel.HasPreviousPage)
+            <div class="dropdown">
+                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @Model.PageViewModel.PageSize
+                </a>
+
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href='@Url.Action("GetAddressesDataQuery", "Home", new { SNewParameters = "[{\"Item1\":\"PageSize\",\"Item2\":\"5\"}]" })'>5</a>
+                    <a class="dropdown-item" href='@Url.Action("GetAddressesDataQuery", "Home", new { SNewParameters = "[{\"Item1\":\"PageSize\",\"Item2\":\"10\"}]" })'>10</a>
+                    <a class="dropdown-item" href='@Url.Action("GetAddressesDataQuery", "Home", new { SNewParameters = "[{\"Item1\":\"PageSize\",\"Item2\":\"20\"}]" })'>20</a>
+                    <a class="dropdown-item" href='@Url.Action("GetAddressesDataQuery", "Home", new { SNewParameters = "[{\"Item1\":\"PageSize\",\"Item2\":\"50\"}]" })'>50</a>
+                </div>
+            </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = 1 })' aria-label="Первая">
+                            <span aria-hidden="true">Первая</span>
+                            <span class="sr-only">Первая</span>
+                        </a>
+                       @if (Model.PageViewModel.HasNextPage)
                         {
-                            <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.PageViewModel.PageNumber - 1,
-                                                                                              selectedCountry =Model.FilterViewModel.SelectedCountry,
-                                                                                              selectedCity=Model.FilterViewModel.SelectedCity,
-                                                                                              selectedStreet=Model.FilterViewModel.SelectedStreet,
-                                                                                              selectedHouse=Model.FilterViewModel.SelectedHouse,
-                                                                                              selectedPostCode=Model.FilterViewModel.SelectedPostCode,
-                                                                                              selectedDate=Model.FilterViewModel.SelectedDate,
-                                                                                              sortOrder=Model.SortViewModel.Current,
-                                                                                              noInvertSort=true
-                                                                                            })" tabindex="-1">Previous</a>
-                        }
+                            <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber=Model.PageViewModel.PageNumber - 1 })' aria-label="Предыдущая">
+                                <span aria-hidden="true">Предыдущая</span>
+                                <span class="sr-only">Предыдущая</span>
+                            </a>
+                        } 
                         else
                         {
-                            <a class="page-link" tabindex="-1">Previous</a>
+                            <a class="page-link disabled" href="#" aria-label="Предыдущая">
+                                <span aria-hidden="true">Предыдущая</span>
+                                <span class="sr-only">Предыдущая</span>
+                            </a>
                         }
                     </li>
                     @for (int i = 1; i <= Model.PageViewModel.TotalPages; i++)
                     {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Index", "Home", new { page = i,
-                                                                                              selectedCountry =Model.FilterViewModel.SelectedCountry,
-                                                                                              selectedCity=Model.FilterViewModel.SelectedCity,
-                                                                                              selectedStreet=Model.FilterViewModel.SelectedStreet,
-                                                                                              selectedHouse=Model.FilterViewModel.SelectedHouse,
-                                                                                              selectedPostCode=Model.FilterViewModel.SelectedPostCode,
-                                                                                              selectedDate=Model.FilterViewModel.SelectedDate,
-                                                                                              sortOrder=Model.SortViewModel.Current,
-                                                                                              noInvertSort=true
-                                                                                            })">@i.ToString()</a>
-                                                                                        </li>
-                                                                                    }
+                    <li class="page-item"><a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>@i</a></li>
+                    }
                     <li class="page-item">
-                        @if (Model.PageViewModel.HasNextPage)
+                       @if (Model.PageViewModel.HasNextPage)
                         {
-                            <a class="page-link" href="@Url.Action("Index", "Home", new { page = Model.PageViewModel.PageNumber + 1,
-                                                                                              selectedCountry =Model.FilterViewModel.SelectedCountry,
-                                                                                              selectedCity=Model.FilterViewModel.SelectedCity,
-                                                                                              selectedStreet=Model.FilterViewModel.SelectedStreet,
-                                                                                              selectedHouse=Model.FilterViewModel.SelectedHouse,
-                                                                                              selectedPostCode=Model.FilterViewModel.SelectedPostCode,
-                                                                                              selectedDate=Model.FilterViewModel.SelectedDate,
-                                                                                              sortOrder=Model.SortViewModel.Current,
-                                                                                              noInvertSort=true
-                                                                                            })">Next</a>
-                        }
+                            <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber=Model.PageViewModel.PageNumber + 1 })' aria-label="Следующая">
+                                <span aria-hidden="true">Следующая</span>
+                                <span class="sr-only">Следующая</span>
+                            </a>
+                        } 
                         else
                         {
-                            <a class="page-link">Next</a>
+                            <a class="page-link disabled" href="#" aria-label="Следующая">
+                                <span aria-hidden="true">Следующая</span>
+                                <span class="sr-only">Следующая</span>
+                            </a>
                         }
+                        <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber=Model.PageViewModel.TotalPages })' aria-label="Последняя">
+                            <span aria-hidden="true">Последняя</span>
+                            <span class="sr-only">Последняя</span>
+                        </a>
                     </li>
                 </ul>
             </nav>
-        </div>
     </form>
 </body>
 </html>

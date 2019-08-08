@@ -16,10 +16,12 @@ namespace Database_of_email_addresses.Models
         public SortState PostCodeSort { get; set; }
         public SortState DateSort { get; set; }
         public SortState Current { get; set; }
+        public bool NoInvertSort { get; set; }
         public bool Up { get; set; }
 
         public SortViewModel(SortState sortState, bool noInvertSort)
         {
+            NoInvertSort = noInvertSort;
             IDSort = SortState.IDAsc;
             CountrySort = SortState.CountryAsc;
             CitySort = SortState.CityAsc;
@@ -134,11 +136,11 @@ namespace Database_of_email_addresses.Models
                 }
             }
 
-
         }
 
         public static IQueryable<Address> Sort(IQueryable<Address> addresses, SortState sortOrder)
         {
+            #region Sorting
             switch (sortOrder)
             {
                 case SortState.IDAsc:
@@ -184,6 +186,7 @@ namespace Database_of_email_addresses.Models
                     addresses = addresses.OrderByDescending(s => s.Date);
                     break;
             }
+            #endregion
             return addresses;
         }
     }
