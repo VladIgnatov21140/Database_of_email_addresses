@@ -7,6 +7,7 @@ $('.filtertext').keypress(function (event) {
         SendFilteringReport();
     }
 });
+
 $('#refreshtable').click(function (event) {
     refreshtable();
 });

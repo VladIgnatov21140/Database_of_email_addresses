@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Database_of_email_addresses.DBController
+﻿namespace Database_of_email_addresses.DBController
 {
         public enum SortState
         {
@@ -11,15 +6,17 @@ namespace Database_of_email_addresses.DBController
             IDDesc,
             CountryAsc,
             CountryDesc,
+            AreaAsc,
+            AreaDesc,
             CityAsc,
             CityDesc,
             StreetAsc,
             StreetDesc,
+            HousingAsc,
+            HousingDesc,
             HouseAsc,
             HouseDesc,
             PostCodeAsc,
-            PostCodeDesc,
-            DateAsc,
-            DateDesc
+            PostCodeDesc
         }
 }

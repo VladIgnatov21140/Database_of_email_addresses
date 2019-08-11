@@ -1,28 +1,74 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Database_of_email_addresses.DBController.DBContexts;
+using System;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Database_of_email_addresses.Models;
-using Database_of_email_addresses.DBController.DBContexts;
 
 namespace Database_of_email_addresses.DBController
 {
     public static class DBInitializator
     {
-            public static void Initialize(AddressContext addrContext)
+        public async static void Initialize(AddressContext addrContext)
+        {
+            DataTable addresses = new DataTable("Addresses");
+            addresses.Columns.Add("Country", typeof(string));
+            addresses.Columns.Add("Area", typeof(string));
+            addresses.Columns.Add("City", typeof(string));
+            addresses.Columns.Add("Street", typeof(string));
+            addresses.Columns.Add("Housing", typeof(string));
+            addresses.Columns.Add("House", typeof(int));
+            addresses.Columns.Add("PostCode", typeof(string));
+            addresses.Columns.Add("Date", typeof(string));
+
+            int k = 1;
+
+            if (!addrContext.Addresses.Any())
             {
-                if (!addrContext.Addresses.Any())
+                for (int cc = 1; cc < 11; cc++)
                 {
-                    addrContext.AddRange(
-                        new Address("Россия", "Ульяновск", "Ленина, ул.", 1, "432071", new DateTime(2014, 04, 10, 12, 12, 21)),
-                        new Address("Россия", "Ульяновск", "Нариманова, прт. ", 2, "432072", new DateTime(2014, 03, 15, 12, 15, 34)),
-                        new Address("Россия", "Москва", "Киевский, пр-т.", 4, "425072", new DateTime(2014, 05, 01, 12, 23, 0)),
-                        new Address("Россия", "Москва", "Киевский, пр-т.", 6, "432252", new DateTime(2014, 05, 01, 12, 23, 0)),
-                        new Address("Россия", "Москва", "Киевский, пр-т.", 5, "432452", new DateTime(2014, 05, 01, 12, 23, 0))
-                    );
-                addrContext.SaveChanges();
+                    for (int i = 1; i < 10001; i++)
+                    {
+                        for (int r = 1; r < 51; r++)
+                        {
+                            addresses.Rows.Add("Страна" + cc.ToString(), "Область" + k++.ToString(), "Город" + k++.ToString(), "Улица" + k++.ToString(), "Корпус" + k++.ToString(), k++, k++.ToString());
+                        }
+                    }
+
+                    AddDataToSqlDB(addresses);
+                    addresses.Clear();
                 }
             }
+        }
+
+        public static void AddDataToSqlDB(DataTable addresses)
+        {
+            using (var connection = new SqlConnection(@"Server=DESKTOP-COESAPT\SQLEXPRESS;Database=emailaddressesstoredb;Trusted_Connection=True;MultipleActiveResultSets=true"))
+            {
+                SqlTransaction transaction = null;
+                connection.Open();
+                try
+                {
+                    transaction = connection.BeginTransaction();
+                    using (var sqlBulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.TableLock, transaction))
+                    {
+                        sqlBulkCopy.DestinationTableName = "Addresses";
+                        sqlBulkCopy.ColumnMappings.Add("Country", "Country");
+                        sqlBulkCopy.ColumnMappings.Add("Area", "Area");
+                        sqlBulkCopy.ColumnMappings.Add("City", "City");
+                        sqlBulkCopy.ColumnMappings.Add("Street", "Street");
+                        sqlBulkCopy.ColumnMappings.Add("Housing", "Housing");
+                        sqlBulkCopy.ColumnMappings.Add("House", "House");
+                        sqlBulkCopy.ColumnMappings.Add("PostCode", "PostCode");
+
+                        sqlBulkCopy.WriteToServer(addresses);
+                    }
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                }
+            }
+        }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Database_of_email_addresses.Models;
-using JetBrains.Annotations;
+﻿using Database_of_email_addresses.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database_of_email_addresses.DBController.DBContexts
@@ -15,6 +10,7 @@ namespace Database_of_email_addresses.DBController.DBContexts
         public AddressContext(DbContextOptions<AddressContext> options)
             : base(options)
         {
+            Database.SetCommandTimeout(60);
             Database.EnsureCreated();
         }
     }

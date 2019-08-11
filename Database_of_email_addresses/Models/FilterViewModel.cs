@@ -1,37 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
-using System.Linq;
-
+﻿
 namespace Database_of_email_addresses.Models
 {
     public class FilterViewModel
     {
         public string SelectedCountry { get; set; }
+        public string SelectedArea { get; set; }
         public string SelectedCity { get; set; }
         public string SelectedStreet { get; set; }
+        public string SelectedHousing { get; set; }
         public string SelectedHouse { get; set; }
         public string SelectedPostCode { get; set; }
-        public string SelectedDate { get; set; }
 
         public FilterViewModel()
         {
             SelectedCountry = "";
+            SelectedArea = "";
             SelectedCity = "";
             SelectedStreet = "";
+            SelectedHousing = "";
             SelectedHouse = "";
             SelectedPostCode = "";
-            SelectedDate = "";
         }
 
-        public FilterViewModel(string selectedCountry, string selectedCity, string selectedStreet,
-                                string selectedHouse, string selectedPostCode, string selectedDate)
+        public FilterViewModel(string selectedCountry, string selectedArea, string selectedCity, string selectedStreet,
+                                string selectedHousing, string selectedHouse, string selectedPostCode)
         {
             SelectedCountry = selectedCountry;
+            SelectedArea = selectedArea;
             SelectedCity = selectedCity;
             SelectedStreet = selectedStreet;
+            SelectedHousing = selectedHousing;
             SelectedHouse = selectedHouse;
             SelectedPostCode = selectedPostCode;
-            SelectedDate = selectedDate;
         }
     }
 }
