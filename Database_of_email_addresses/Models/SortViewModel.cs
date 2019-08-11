@@ -109,7 +109,7 @@ namespace Database_of_email_addresses.Models
             Up = sortViewModel.Up;
         }
 
-        //Invert sorting
+        ///Invert sorting
         public SortViewModel(SortViewModel sortViewModel, bool InvertSorting)
         {
             IDSort = SortState.IDAsc;

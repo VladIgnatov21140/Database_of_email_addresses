@@ -182,6 +182,10 @@
                     {
                         for (int i = sect - 4; i <= sect; i++)
                         {
+                            if (Model.PageViewModel.PageNumber > i)
+                            {
+                                continue;
+                            }
                             if (i != Model.PageViewModel.PageNumber)
                             {
                                 <li class="page-item">

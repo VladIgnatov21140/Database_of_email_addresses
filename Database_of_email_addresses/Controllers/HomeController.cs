@@ -73,47 +73,9 @@ namespace Database_of_email_addresses.Controllers
             IndexViewModel indexViewModel = JsonConvert.DeserializeObject<IndexViewModel>(indexViewModelInJson);
             IQueryable<Address> addresses = addrContext.Addresses;
 
-            #region Filtering
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedCountry))
-            {
-                string Country = indexViewModel.FilterViewModel.SelectedCountry;
-                addresses = addresses.Where(p => p.Country.Contains(Country));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedArea))
-            {
-                string Area = indexViewModel.FilterViewModel.SelectedArea;
-                addresses = addresses.Where(p => p.Area.Contains(Area));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedCity))
-            {
-                string City = indexViewModel.FilterViewModel.SelectedCity;
-                addresses = addresses.Where(p => p.City.Contains(City));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedStreet))
-            {
-                string Street = indexViewModel.FilterViewModel.SelectedStreet;
-                addresses = addresses.Where(p => p.Street.Contains(Street));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedHousing))
-            {
-                string Housing = indexViewModel.FilterViewModel.SelectedHousing;
-                addresses = addresses.Where(p => p.Housing.Contains(Housing));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedHouse))
-            {
-                if (int.TryParse(indexViewModel.FilterViewModel.SelectedHouse, out int house))
-                    addresses = addresses.Where(p => p.House.ToString().Contains(indexViewModel.FilterViewModel.SelectedHouse));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedPostCode))
-            {
-                string PostCode = indexViewModel.FilterViewModel.SelectedPostCode;
-                addresses = addresses.Where(p => p.PostCode.Contains(PostCode));
-            }
-            #endregion
+            addresses = FilterViewModel.SetFiltering(addresses, indexViewModel);
 
-            #region Sorting
             addresses = SortViewModel.Sort(addresses, indexViewModel.SortViewModel.Current);
-            #endregion
 
             #region Pagination
             indexViewModel.PageViewModel.RowsCount = await addresses.CountAsync();
@@ -144,47 +106,9 @@ namespace Database_of_email_addresses.Controllers
 
             IQueryable<Address> addresses = addrContext.Addresses;
 
-            #region Filtering
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedCountry))
-            {
-                string Country = indexViewModel.FilterViewModel.SelectedCountry;
-                addresses = addresses.Where(p => p.Country.Contains(Country));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedArea))
-            {
-                string Area = indexViewModel.FilterViewModel.SelectedArea;
-                addresses = addresses.Where(p => p.Area.Contains(Area));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedCity))
-            {
-                string City = indexViewModel.FilterViewModel.SelectedCity;
-                addresses = addresses.Where(p => p.City.Contains(City));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedStreet))
-            {
-                string Street = indexViewModel.FilterViewModel.SelectedStreet;
-                addresses = addresses.Where(p => p.Street.Contains(Street));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedHousing))
-            {
-                string Housing = indexViewModel.FilterViewModel.SelectedHousing;
-                addresses = addresses.Where(p => p.Housing.Contains(Housing));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedHouse))
-            {
-                if (int.TryParse(indexViewModel.FilterViewModel.SelectedHouse, out int house))
-                    addresses = addresses.Where(p => p.House.ToString().Contains(indexViewModel.FilterViewModel.SelectedHouse));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedPostCode))
-            {
-                string PostCode = indexViewModel.FilterViewModel.SelectedPostCode;
-                addresses = addresses.Where(p => p.PostCode.Contains(PostCode));
-            }
-            #endregion
+            addresses = FilterViewModel.SetFiltering(addresses, indexViewModel);
 
-            #region Sorting
             addresses = SortViewModel.Sort(addresses, indexViewModel.SortViewModel.Current);
-            #endregion
 
             #region Pagination
             indexViewModel.PageViewModel.RowsCount = await addresses.CountAsync();
@@ -216,47 +140,9 @@ namespace Database_of_email_addresses.Controllers
 
             IQueryable<Address> addresses = addrContext.Addresses;
 
-            #region Filtering
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedCountry))
-            {
-                string Country = indexViewModel.FilterViewModel.SelectedCountry;
-                addresses = addresses.Where(p => p.Country.Contains(Country));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedArea))
-            {
-                string Area = indexViewModel.FilterViewModel.SelectedArea;
-                addresses = addresses.Where(p => p.Area.Contains(Area));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedCity))
-            {
-                string City = indexViewModel.FilterViewModel.SelectedCity;
-                addresses = addresses.Where(p => p.City.Contains(City));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedStreet))
-            {
-                string Street = indexViewModel.FilterViewModel.SelectedStreet;
-                addresses = addresses.Where(p => p.Street.Contains(Street));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedHousing))
-            {
-                string Housing = indexViewModel.FilterViewModel.SelectedHousing;
-                addresses = addresses.Where(p => p.Housing.Contains(Housing));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedHouse))
-            {
-                if (int.TryParse(indexViewModel.FilterViewModel.SelectedHouse, out int house))
-                    addresses = addresses.Where(p => p.House.ToString().Contains(indexViewModel.FilterViewModel.SelectedHouse));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedPostCode))
-            {
-                string PostCode = indexViewModel.FilterViewModel.SelectedPostCode;
-                addresses = addresses.Where(p => p.PostCode.Contains(PostCode));
-            }
-            #endregion
+            addresses = FilterViewModel.SetFiltering(addresses, indexViewModel);
 
-            #region Sorting
             addresses = SortViewModel.Sort(addresses, indexViewModel.SortViewModel.Current);
-            #endregion
 
             #region Pagination
             indexViewModel.PageViewModel.RowsCount = await addresses.CountAsync();
@@ -286,45 +172,8 @@ namespace Database_of_email_addresses.Controllers
             IndexViewModel indexViewModel = JsonConvert.DeserializeObject<IndexViewModel>(HttpContext.Session.GetString("indexViewModelInJson"));
 
             IQueryable<Address> addresses = addrContext.Addresses;
-            addresses = addresses.Select(s => s);
 
-            #region Filtering
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedCountry))
-            {
-                string Country = indexViewModel.FilterViewModel.SelectedCountry;
-                addresses = addresses.Where(p => p.Country.Contains(Country));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedArea))
-            {
-                string Area = indexViewModel.FilterViewModel.SelectedArea;
-                addresses = addresses.Where(p => p.Area.Contains(Area));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedCity))
-            {
-                string City = indexViewModel.FilterViewModel.SelectedCity;
-                addresses = addresses.Where(p => p.City.Contains(City));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedStreet))
-            {
-                string Street = indexViewModel.FilterViewModel.SelectedStreet;
-                addresses = addresses.Where(p => p.Street.Contains(Street));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedHousing))
-            {
-                string Housing = indexViewModel.FilterViewModel.SelectedHousing;
-                addresses = addresses.Where(p => p.Housing.Contains(Housing));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedHouse))
-            {
-                if (int.TryParse(indexViewModel.FilterViewModel.SelectedHouse, out int house))
-                    addresses = addresses.Where(p => p.House.ToString().Contains(indexViewModel.FilterViewModel.SelectedHouse));
-            }
-            if (!String.IsNullOrWhiteSpace(indexViewModel.FilterViewModel.SelectedPostCode))
-            {
-                string PostCode = indexViewModel.FilterViewModel.SelectedPostCode;
-                addresses = addresses.Where(p => p.PostCode.Contains(PostCode));
-            }
-            #endregion
+            addresses = FilterViewModel.SetFiltering(addresses, indexViewModel);
 
             #region SortingWithSortDirectionControl
             if (indexViewModel.SortViewModel.Current == sortState)
