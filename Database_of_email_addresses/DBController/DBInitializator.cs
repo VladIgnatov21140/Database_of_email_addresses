@@ -67,7 +67,13 @@ namespace Database_of_email_addresses.DBController
                 catch (Exception)
                 {
                     transaction.Rollback();
+                    connection.Dispose();
+                    transaction.Dispose();
                 }
+                connection.Dispose();
+                transaction.Dispose();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
             }
         }
     }

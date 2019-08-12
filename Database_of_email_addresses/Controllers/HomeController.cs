@@ -30,14 +30,14 @@ namespace Database_of_email_addresses.Controllers
 
             #region Pagination
             var count = await addresses.CountAsync();
-            var items = await addresses.Skip(0).Take(5).ToListAsync();
+            var items = await addresses.Skip(0).Take(10).ToListAsync();
             #endregion
 
             #region BuildingViewModel
             IndexViewModel viewModel = new IndexViewModel
             {
                 Addresses = items,
-                PageViewModel = new PageViewModel(count, pageNumber: 1, pageSize: 5),
+                PageViewModel = new PageViewModel(count, pageNumber: 1, pageSize: 10),
                 SortViewModel = new SortViewModel(sortState: SortState.IDAsc),
                 FilterViewModel = new FilterViewModel(),
             };
@@ -52,30 +52,26 @@ namespace Database_of_email_addresses.Controllers
         {
             var date = DateTime.Now;
             string indexViewModelInJson = HttpContext.Session.GetString("indexViewModelInJson");
-            try
-            {
-                foreach (var NewParameter in JsonConvert.DeserializeObject<(string key, string value)[]>(SNewParameters))
-                {
-                    string pattern = @"""+" + NewParameter.key + @"""+:""+\w*""+";
-                    Regex regex = new Regex(pattern);
-                    indexViewModelInJson = regex.Replace(indexViewModelInJson, "\"" + NewParameter.key + "\":\"" + NewParameter.value + "\"", 1);
-                }
-            }
-            catch
-            {
 
-            }
-            finally
-            {
-                HttpContext.Session.SetString("indexViewModelInJson", indexViewModelInJson);
-            }
-            
             IndexViewModel indexViewModel = JsonConvert.DeserializeObject<IndexViewModel>(indexViewModelInJson);
+            
+            string[] Params = SNewParameters.Split(',');
+
+            indexViewModel.FilterViewModel.SelectedCountry = Params[0];
+            indexViewModel.FilterViewModel.SelectedArea = Params[1];
+            indexViewModel.FilterViewModel.SelectedCity = Params[2];
+            indexViewModel.FilterViewModel.SelectedStreet = Params[3];
+            indexViewModel.FilterViewModel.SelectedHousing = Params[4];
+            indexViewModel.FilterViewModel.SelectedHouse = Params[5];
+            indexViewModel.FilterViewModel.SelectedPostCode = Params[6];
+
+            HttpContext.Session.SetString("indexViewModelInJson", JsonConvert.SerializeObject(indexViewModel));
+            
             IQueryable<Address> addresses = addrContext.Addresses;
 
             addresses = FilterViewModel.SetFiltering(addresses, indexViewModel);
 
-            addresses = SortViewModel.Sort(addresses, indexViewModel.SortViewModel.Current);
+            addresses = SortViewModel.SetSort(addresses, indexViewModel.SortViewModel.Current);
 
             #region Pagination
             indexViewModel.PageViewModel.RowsCount = await addresses.CountAsync();
@@ -108,7 +104,7 @@ namespace Database_of_email_addresses.Controllers
 
             addresses = FilterViewModel.SetFiltering(addresses, indexViewModel);
 
-            addresses = SortViewModel.Sort(addresses, indexViewModel.SortViewModel.Current);
+            addresses = SortViewModel.SetSort(addresses, indexViewModel.SortViewModel.Current);
 
             #region Pagination
             indexViewModel.PageViewModel.RowsCount = await addresses.CountAsync();
@@ -142,7 +138,7 @@ namespace Database_of_email_addresses.Controllers
 
             addresses = FilterViewModel.SetFiltering(addresses, indexViewModel);
 
-            addresses = SortViewModel.Sort(addresses, indexViewModel.SortViewModel.Current);
+            addresses = SortViewModel.SetSort(addresses, indexViewModel.SortViewModel.Current);
 
             #region Pagination
             indexViewModel.PageViewModel.RowsCount = await addresses.CountAsync();
@@ -181,7 +177,7 @@ namespace Database_of_email_addresses.Controllers
             else
                 indexViewModel.SortViewModel = new SortViewModel(sortState);
 
-            addresses = SortViewModel.Sort(addresses, indexViewModel.SortViewModel.Current);
+            addresses = SortViewModel.SetSort(addresses, indexViewModel.SortViewModel.Current);
             #endregion
 
             #region Pagination

@@ -4,10 +4,13 @@
 // Write your JavaScript code.
 $('.filtertext').keypress(function (event) {
     if (event.keyCode == 13) {
-        SendFilteringReport();
+        document.location.href = 'https://localhost:5001/Home/SetFilters?SNewParameters='
+            + document.getElementById('SelectedCountry').value + ","
+            + document.getElementById('SelectedArea').value + ","
+            + document.getElementById('SelectedCity').value + ","
+            + document.getElementById('SelectedStreet').value + ","
+            + document.getElementById('SelectedHousing').value + ","
+            + document.getElementById('SelectedHouse').value + ","
+            + document.getElementById('SelectedPostCode').value;
     }
-});
-
-$('#refreshtable').click(function (event) {
-    refreshtable();
 });

@@ -9,76 +9,68 @@
 }
     <body id="content">
         <meta http-equiv="Content-Type" content="text/html; Charset=UTF-8">
-        <script type="text/javascript">
-        function refreshtable() {
-            const request = new XMLHttpRequest();
-            const url = '@Url.Action("Index", "Home")';
-            request.open('GET', url);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-url');
-            request.addEventListener("readystatechange", () => {
-                    if (request.readyState === 4 && request.status === 200) {
-                        $("#content").html(request.responseText);
-                    }
-                });
-            request.send();
-        }
-
-        function SendFilteringReport() {
-            const request = new XMLHttpRequest();
-            let data = "[{\"Item1\":\"SelectedCountry\",\"Item2\":\"" + $('#SelectedCountry').val() + "\"}," + "{\"Item1\":\"SelectedArea\",\"Item2\":\"" + $('#SelectedArea').val() + "\"}," + "{\"Item1\":\"SelectedCity\",\"Item2\":\"" + $('#SelectedCity').val() + "\"}," + "{\"Item1\":\"SelectedStreet\",\"Item2\":\"" + $('#SelectedStreet').val() + "\"}," + "{\"Item1\":\"SelectedHousing\",\"Item2\":\"" + $('#SelectedHousing').val() + "\"}," + "{\"Item1\":\"SelectedHouse\",\"Item2\":\"" + $('#SelectedHouse').val() + "\"}," + "{\"Item1\":\"SelectedPostCode\",\"Item2\":\"" + $('#SelectedPostCode').val() + "\"}" + "]";
-            const url = '@Url.Action("SetFilters", "Home")' + "?SNewParameters=" + data;
-            request.open('GET', url);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-url');
-            request.addEventListener("readystatechange", () => {
-                    if (request.readyState === 4 && request.status === 200) {
-                        $("#content").html(request.responseText);
-                    }
-                });
-            request.send();
-        }
-        </script>
+        <table align="center" width="100%">
+            <thead>
+                <tr>
+                    <th width="*"></th>
+                    <th width="1%">
+                        <div class="dropdown">
+                            <a class="btn btn-secondary dropdown-toggle" border="1" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Model.PageViewModel.PageSize
+                            </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href='@Url.Action("SetPageSize", "Home", new { PageSize = 10 })'>10</a></li>
+                                    <li><a class="dropdown-item" href='@Url.Action("SetPageSize", "Home", new { PageSize = 20 })'>20</a></li>
+                                    <li><a class="dropdown-item" href='@Url.Action("SetPageSize", "Home", new { PageSize = 50 })'>50</a></li>
+                                    <li><a class="dropdown-item" href='@Url.Action("SetPageSize", "Home", new { PageSize = 100 })'>100</a></li>
+                                </ul>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+        </table>
         <form>
             <table class="table table-striped table-bordered" border="1">
                 <thead>
                     <tr>
-                        <th scope="col">
+                        <th scope="col" style=" min-width: 43px; ">
                             <sort-header action="SetSorting" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                         property="@Model.SortViewModel.IDSort">#</sort-header>
+                                         property="@Model.SortViewModel.IDSort"> #</sort-header>
                         </th>
-                        <th scope="col">
+                        <th scope="col" style=" min-width: 85px; ">
                             <sort-header action="SetSorting" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                         property="@Model.SortViewModel.CountrySort">Страна</sort-header>
+                                         property="@Model.SortViewModel.CountrySort"> Страна</sort-header>
                         </th>
-                        <th scope="col">
+                        <th scope="col" style=" min-width: 94px; ">
                             <sort-header action="SetSorting" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                         property="@Model.SortViewModel.AreaSort">Область</sort-header>
+                                         property="@Model.SortViewModel.AreaSort"> Область</sort-header>
                         </th>
-                        <th scope="col">
+                        <th scope="col" style=" min-width: 77px; ">
                             <sort-header action="SetSorting" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                         property="@Model.SortViewModel.CitySort">Город</sort-header>
+                                         property="@Model.SortViewModel.CitySort"> Город</sort-header>
                         </th>
-                        <th scope="col">
+                        <th scope="col" style=" min-width: 77px; ">
                             <sort-header action="SetSorting" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                         property="@Model.SortViewModel.StreetSort">Улица</sort-header>
+                                         property="@Model.SortViewModel.StreetSort"> Улица</sort-header>
                         </th>
-                        <th scope="col">
+                        <th scope="col" style=" min-width: 84px; ">
                             <sort-header action="SetSorting" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                         property="@Model.SortViewModel.HousingSort">Корпус</sort-header>
+                                         property="@Model.SortViewModel.HousingSort"> Корпус</sort-header>
                         </th>
-                        <th scope="col">
+                        <th scope="col" style=" min-width: 64px; ">
                             <sort-header action="SetSorting" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                         property="@Model.SortViewModel.HouseSort">Дом</sort-header>
+                                         property="@Model.SortViewModel.HouseSort"> Дом</sort-header>
                         </th>
-                        <th scope="col">
+                        <th scope="col" style=" min-width: 85px; ">
                             <sort-header action="SetSorting" up="@Model.SortViewModel.Up" current="@Model.SortViewModel.Current"
-                                         property="@Model.SortViewModel.PostCodeSort">Индекс</sort-header>
+                                         property="@Model.SortViewModel.PostCodeSort"> Индекс</sort-header>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            <span id="refreshtable" class="glyphicon glyphicon-refresh" onclick=""></span>
+                            <a href='@Url.Action("Index", "Home")'><span align="center" style=" padding:10%; " id="refreshtable" class="glyphicon glyphicon-refresh center-block"></span></a>
                         </td>
                         <td>
                             <input type="text" class="filtertext form-control" id="SelectedCountry" onkeypress="" value="@Model.FilterViewModel.SelectedCountry" />
@@ -117,18 +109,6 @@
                     }
                 </tbody>
             </table>
-            <div class="dropdown">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    @Model.PageViewModel.PageSize
-                </a>
-
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href='@Url.Action("SetPageSize", "Home", new { PageSize = 5 })'>5</a>
-                    <a class="dropdown-item" href='@Url.Action("SetPageSize", "Home", new { PageSize = 10 })'>10</a>
-                    <a class="dropdown-item" href='@Url.Action("SetPageSize", "Home", new { PageSize = 20 })'>20</a>
-                    <a class="dropdown-item" href='@Url.Action("SetPageSize", "Home", new { PageSize = 50 })'>50</a>
-                </div>
-            </div>
             <nav aria-label="Page navigation">
                 <ul class="pagination">
                     @if (Model.PageViewModel.PageNumber != 1)
@@ -167,64 +147,13 @@
                             </a>
                         </li>
                     }
-                    @{
-                        int sect = 0;
-                        while (Model.PageViewModel.PageNumber > sect)
-                        {
-                            sect += 5;
-                        }
-                        if (sect > Model.PageViewModel.TotalPages)
-                        {
-                            sect -= 5;
-                        }
-                    }
-                    @if (Model.PageViewModel.PageNumber > 0 && Model.PageViewModel.PageNumber < 6)
-                    {
-                        for (int i = sect - 4; i <= sect; i++)
-                        {
-                            if (Model.PageViewModel.PageNumber > i)
-                            {
-                                continue;
-                            }
-                            if (i != Model.PageViewModel.PageNumber)
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>@i</a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="page-item active">
-                                    <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>|@i|<span class="sr-only">(current)</span></a>
-                                </li>
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (int i = sect - 5; i <= sect; i++)
-                        {
-                            if (i != Model.PageViewModel.PageNumber)
-                            {
-                                <li class="page-item">
-                                    <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>@i</a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="page-item active">
-                                    <a class="page-link text-primary" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>|@i|<span class="sr-only">(current)</span></a>
-                                </li>
-                            }
-                        }
-                    }
-                    @for (int i = sect + 1; i <= sect + 5; i++)
-                    {
-                        if (i > Model.PageViewModel.TotalPages)
-                        {
-                            break;
-                        }
 
+                    @for (int i = Model.PageViewModel.PageNumber - 5; i <= Model.PageViewModel.PageNumber; i++)
+                    {
+                        if (i < 1)
+                        {
+                            continue;
+                        }
                         if (i != Model.PageViewModel.PageNumber)
                         {
                             <li class="page-item">
@@ -234,7 +163,26 @@
                         else
                         {
                             <li class="page-item active">
-                                <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>|@i|<span class="sr-only">(current)</span></a>
+                                <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>@i<span class="sr-only">(current)</span></a>
+                            </li>
+                        }
+                    }
+                    @for (int i = Model.PageViewModel.PageNumber + 1; i < Model.PageViewModel.PageNumber + 6; i++)
+                    {
+                        if (i > Model.PageViewModel.TotalPages)
+                        {
+                            continue;
+                        }
+                        if (i != Model.PageViewModel.PageNumber)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item active">
+                                <a class="page-link" href='@Url.Action("GetPage", "Home", new { PageNumber = i })'>@i<span class="sr-only">(current)</span></a>
                             </li>
                         }
                     }
@@ -268,13 +216,13 @@
                     else
                     {
                         <li class="page-item disabled">
-                            <a class="page-link" href='#' tabindex="-1" >
+                            <a class="page-link" href='#' tabindex="-1">
                                 <span aria-hidden="true">Последняя</span>
                                 <span class="sr-only">Последняя</span>
                             </a>
                         </li>
                     }
-                    </ul>
+                </ul>
             </nav>
         </form>
     </body>

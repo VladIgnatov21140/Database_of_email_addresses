@@ -180,7 +180,7 @@ namespace Database_of_email_addresses.Models
             #endregion
         }
 
-        public static IQueryable<Address> Sort(IQueryable<Address> addresses, SortState sortOrder)
+        public static IQueryable<Address> SetSort(IQueryable<Address> addresses, SortState sortOrder)
         {
             #region SetSortingCommand
             switch (sortOrder)
