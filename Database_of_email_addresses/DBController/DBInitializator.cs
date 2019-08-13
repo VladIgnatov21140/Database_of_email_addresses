@@ -24,7 +24,7 @@ namespace Database_of_email_addresses.DBController
 
             if (!addrContext.Addresses.Any())
             {
-                for (int cc = 1; cc < 11; cc++)
+                for (int cc = 1; cc < 3; cc++)
                 {
                     for (int i = 1; i < 10001; i++)
                     {
@@ -51,6 +51,7 @@ namespace Database_of_email_addresses.DBController
                     transaction = connection.BeginTransaction();
                     using (var sqlBulkCopy = new SqlBulkCopy(connection, SqlBulkCopyOptions.TableLock, transaction))
                     {
+                        sqlBulkCopy.BulkCopyTimeout = 120;
                         sqlBulkCopy.DestinationTableName = "Addresses";
                         sqlBulkCopy.ColumnMappings.Add("Country", "Country");
                         sqlBulkCopy.ColumnMappings.Add("Area", "Area");
@@ -61,6 +62,7 @@ namespace Database_of_email_addresses.DBController
                         sqlBulkCopy.ColumnMappings.Add("PostCode", "PostCode");
 
                         sqlBulkCopy.WriteToServer(addresses);
+                        sqlBulkCopy.Close();
                     }
                     transaction.Commit();
                 }
